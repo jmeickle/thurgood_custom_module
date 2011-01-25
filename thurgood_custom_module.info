@@ -1,0 +1,7 @@
+;$Id$
+name = "Thurgood Custom Module"
+description = "Custom code for Thurgood."
+package = "Thurgood"
+core = 6.x
+php = 5.3
+version = 6.x-1.0

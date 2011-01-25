@@ -1,0 +1,28 @@
+<?php
+// $Id$
+//Created using Brandon Dixon's <brandon.s.dixon@gmail.com> Skeleton Module Generator
+/**
+* Replace all comments if you would like. Be sure to identify params, files and returns in your comments
+*/
+
+// From http://drupal.org/node/617694
+
+/**
+ * Implementation of hook_elements().
+ *
+ * This extends optionwidgets_elements() to add in additional processing.
+ * Note that your module must be weighted higher than optionwidgets
+ * for this code to take effect.
+ */
+function thurgood_custom_module_elements() {
+  $type['optionwidgets_buttons']['#process'][] = 'remove_radio_na';
+  return $type;
+}
+
+/**
+ * Unset the N/A option on option widget radio buttons.
+ */
+function remove_radio_na($element) {
+  unset($element['value']['#options']['']);
+  return $element;
+}
