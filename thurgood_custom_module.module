@@ -26,3 +26,65 @@ function remove_radio_na($element) {
   unset($element['value']['#options']['']);
   return $element;
 }
+
+/**
+  * Implementation of hook_block. 
+  */
+function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()) {
+  switch ($op) {
+
+    case 'list':
+      $blocks['article'] = array('info' => t('Thurgood: Article Block')));
+      $blocks['event'] = array('info' => t('Thurgood: Event Block')));
+      $blocks['place'] = array('info' => t('Thurgood: Place Block')));
+      return $blocks;
+
+    // In case we eventually want to add config options here.
+    case 'configure':
+      $form = array();
+      return $form;
+
+    case 'save':
+      return;
+
+    case 'view':
+      switch ($delta) {
+
+        case 'article':
+          $block['subject'] = t('Write an Article');
+          $block['content'] = t('Body!');
+          break;
+
+        case 'event':
+          $block['subject'] = t('Create an Event');
+          $block['content'] = t('Body!');
+          break;
+
+        case 'place':
+          $block['subject'] = t('List a Place');
+          $block['content'] = t('Body!');
+          break;
+
+      }
+      return $block;
+  }
+}
+
+/**
+ * A filler block content function.
+ */
+function thurgood_custom_module_contents($which_block) {
+  switch ($which_block) {
+    case 1:
+      // Modules would typically perform some database queries to fetch the
+      // content for their blocks. Here, we'll just use the variable set in the
+      // block configuration or, if none has set, a default value.
+      return variable_get('thurgood_custom_module_string',  t('A default value.'));
+
+    case 2:
+      // It is possible that your block will not have any content, since it is
+      // probably dynamically constructed. In this case, Drupal will not display
+      // the block at all.
+      return;
+  }
+}
