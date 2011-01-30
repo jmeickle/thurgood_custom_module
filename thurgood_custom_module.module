@@ -34,9 +34,9 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
   switch ($op) {
 
     case 'list':
-      $blocks['article'] = array('info' => t('Thurgood: Article Block')));
-      $blocks['event'] = array('info' => t('Thurgood: Event Block')));
-      $blocks['place'] = array('info' => t('Thurgood: Place Block')));
+      $blocks['article'] = array('info' => t('Thurgood: Article Block'));
+      $blocks['event'] = array('info' => t('Thurgood: Event Block'));
+      $blocks['place'] = array('info' => t('Thurgood: Place Block'));
       return $blocks;
 
     // In case we eventually want to add config options here.
