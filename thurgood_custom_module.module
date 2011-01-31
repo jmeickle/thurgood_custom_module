@@ -31,9 +31,10 @@ function remove_radio_na($element) {
   * Implementation of hook_block. 
   */
 function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()) {
-  switch ($op) {
 
-    define("ICONPATH", "/profiles/thurgood/themes/sky_thurgood/images/Coquette/");
+  define("ICONPATH", "/profiles/thurgood/themes/sky_thurgood/images/Coquette/");
+
+  switch ($op) {
 
     case 'list':
       $blocks['article'] = array('info' => t('Thurgood: Dashboard Article Block'));
