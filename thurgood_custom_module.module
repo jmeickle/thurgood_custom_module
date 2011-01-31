@@ -57,15 +57,15 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
       switch ($delta) {
 
         case 'article':
-          $block['content'] = '<h2 class="dashboard-block>' . t('Write an Article') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/text_page.png', 'Write an Article');
+          $block['content'] = '<h2 class="dashboard-block">' . t('Write an Article') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/text_page.png', 'Write an Article');
           break;
 
         case 'event':
-          $block['content'] = '<h2 class="dashboard-block>' . t('Create an Event') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/calendar.png', 'Create an Event');
+          $block['content'] = '<h2 class="dashboard-block">' . t('Create an Event') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/calendar.png', 'Create an Event');
           break;
 
         case 'place':
-          $block['content'] = '<h2 class="dashboard-block>' . t('List a Place') . '</h2>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/globe.png', 'List a Place');
+          $block['content'] = '<h2 class="dashboard-block">' . t('List a Place') . '</h2>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/globe.png', 'List a Place');
           break;
 
         case 'main':
