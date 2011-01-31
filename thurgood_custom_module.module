@@ -63,13 +63,13 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
           break;
 
         case 'event':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Create an Event') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/calendar.png', 'Create an Event');
+          $block['content'] = l('<h3 class="dashboard-block">' . t('Create an Event') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/calendar.png', 'Create an Event'),
                                 'node/add/event',
                                 array('html' => TRUE));
           break;
 
         case 'place':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('List a Place') . '</h3>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/globe.png', 'List a Place');
+          $block['content'] = l('<h3 class="dashboard-block">' . t('List a Place') . '</h3>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/globe.png', 'List a Place'),
                                 'node/add/place',
                                 array('html' => TRUE));
           break;
