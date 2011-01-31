@@ -33,10 +33,15 @@ function remove_radio_na($element) {
 function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()) {
   switch ($op) {
 
+    define("ICONPATH", "/profiles/thurgood/themes/sky_thurgood/images/Coquette/");
+
     case 'list':
-      $blocks['article'] = array('info' => t('Thurgood: Article Block'));
-      $blocks['event'] = array('info' => t('Thurgood: Event Block'));
-      $blocks['place'] = array('info' => t('Thurgood: Place Block'));
+      $blocks['article'] = array('info' => t('Thurgood: Dashboard Article Block'));
+      $blocks['event'] = array('info' => t('Thurgood: Dashboard Event Block'));
+      $blocks['place'] = array('info' => t('Thurgood: Dashboard Place Block'));
+
+      $blocks['main'] = array('info' => t('Thurgood: Dashboard Main Block'));
+      $blocks['userinfo'] = array('info' => t('Thurgood: Dashboard User Info Block'));
       return $blocks;
 
     // In case we eventually want to add config options here.
@@ -51,18 +56,24 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
       switch ($delta) {
 
         case 'article':
-          $block['subject'] = t('Write an Article');
-          $block['content'] = t('Body!');
+          $block['content'] = '<h2 class="dashboard-block>' . t('Write an Article') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/text_page.png', 'Write an Article');
           break;
 
         case 'event':
-          $block['subject'] = t('Create an Event');
-          $block['content'] = t('Body!');
+          $block['content'] = '<h2 class="dashboard-block>' . t('Create an Event') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/calendar.png', 'Create an Event');
           break;
 
         case 'place':
-          $block['subject'] = t('List a Place');
-          $block['content'] = t('Body!');
+          $block['content'] = '<h2 class="dashboard-block>' . t('List a Place') . '</h2>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/globe.png', 'List a Place');
+          break;
+
+        case 'main':
+          $block['content'] = '<p>Have a bunch of links here that are the main body.</p>';
+          break;
+
+        case 'userinfo':
+          $block['subject'] = t('My Info');
+          $block['content'] = t('Some user info and tokens and such go in here.');
           break;
 
       }
