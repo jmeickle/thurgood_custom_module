@@ -83,7 +83,7 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
           break;
 
         case 'tutorial':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('View Tutorial') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/help.png', 'View Tutorial') . '<p class="dashboard-block">Learn how the ctreentry.info website works here.'</p>',
+          $block['content'] = l('<h3 class="dashboard-block">' . t('View Tutorial') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/help.png', 'View Tutorial') . '<p class="dashboard-block">Learn how the ctreentry.info website works here.</p>',
                                 'tutorial',
                                 array('html' => TRUE));
           break;
