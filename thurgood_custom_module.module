@@ -89,7 +89,7 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
           break;
 
         case 'filter':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Filter Content') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/search_page.png', 'Filter Content') . '<p class="dashboard-block">View the site's content and apply filters to narrow down your search.</p>',
+          $block['content'] = l('<h3 class="dashboard-block">' . t('Filter Content') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/search_page.png', 'Filter Content') . '<p class="dashboard-block">View site content and apply filters to narrow down your search.</p>',
                                 'admin/content/filter',
                                 array('html' => TRUE));
           break;
