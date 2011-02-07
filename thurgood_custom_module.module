@@ -41,6 +41,8 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
       $blocks['event'] = array('info' => t('Thurgood: Dashboard Event Block'));
       $blocks['place'] = array('info' => t('Thurgood: Dashboard Place Block'));
 
+      $blocks['tutorial'] = array('info' => t('Thurgood: Dashboard Tutorial Block'));
+
       $blocks['filter'] = array('info' => t('Thurgood: Dashboard Filter Block'));
       $blocks['workflow'] = array('info' => t('Thurgood: Dashboard Workflow Block'));
 
@@ -80,14 +82,20 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
                                 array('html' => TRUE));
           break;
 
+        case 'tutorial':
+          $block['content'] = l('<h3 class="dashboard-block">' . t('View Tutorial') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/help.png', 'View Tutorial') . '<p class="dashboard-block">Learn how the ctreentry.info website works here.'</p>',
+                                'tutorial',
+                                array('html' => TRUE));
+          break;
+
         case 'filter':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Filter Content') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/search_page.png', 'Filter Content') . '<p class="dashboard-block">' . $type->description . '</p>',
+          $block['content'] = l('<h3 class="dashboard-block">' . t('Filter Content') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/search_page.png', 'Filter Content') . '<p class="dashboard-block">View the site's content and apply filters to narrow down your search.</p>',
                                 'admin/content/filter',
                                 array('html' => TRUE));
           break;
 
         case 'workflow':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Monitor Workflow') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/page_process.png', 'Monitor Workflow') . '<p class="dashboard-block">' . $type->description . '</p>',
+          $block['content'] = l('<h3 class="dashboard-block">' . t('Monitor Workflow') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/page_process.png', 'Monitor Workflow') . '<p class="dashboard-block">View the publishing status of content across the site.</p>',
                                 'workflow',
                                 array('html' => TRUE));
           break;
