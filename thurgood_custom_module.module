@@ -132,3 +132,12 @@ function thurgood_custom_module_contents($which_block) {
       return;
   }
 }
+
+// hook_init implementation, right now just for the validation email message.
+function thurgood_custom_module_init() {
+  global $user;
+  if (!empty($user->roles['10'])) {
+     drupal_set_message('You are seeing this message because you haven\'t confirmed your email address yet. 
+Certain sections of the site will be inaccessible until you do so. <a href="http://ctreentry.info/toboggan/revalidate/'.$user->uid.'">Click here if you need another copy of your validation email.</a>');
+  }
+}
