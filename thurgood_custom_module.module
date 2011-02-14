@@ -47,7 +47,6 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
       $blocks['workflow'] = array('info' => t('Thurgood: Dashboard Workflow Block'));
 
       $blocks['main'] = array('info' => t('Thurgood: Dashboard Main Block'));
-      $blocks['userinfo'] = array('info' => t('Thurgood: Dashboard User Info Block'));
       return $blocks;
 
     // In case we eventually want to add config options here.
@@ -104,32 +103,8 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
           $block['content'] = t('Have a bunch of links here that are the main body.');
           break;
 
-        case 'userinfo':
-          $block['subject'] = t('My Info');
-          $block['content'] = t('Some user info and tokens and such go in here.');
-          break;
-
       }
       return $block;
-  }
-}
-
-/**
- * A filler block content function.
- */
-function thurgood_custom_module_contents($which_block) {
-  switch ($which_block) {
-    case 1:
-      // Modules would typically perform some database queries to fetch the
-      // content for their blocks. Here, we'll just use the variable set in the
-      // block configuration or, if none has set, a default value.
-      return variable_get('thurgood_custom_module_string',  t('A default value.'));
-
-    case 2:
-      // It is possible that your block will not have any content, since it is
-      // probably dynamically constructed. In this case, Drupal will not display
-      // the block at all.
-      return;
   }
 }
 
