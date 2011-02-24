@@ -116,3 +116,28 @@ function thurgood_custom_module_init() {
 Certain sections of the site will be inaccessible until you do so. <a href="http://ctreentry.info/toboggan/revalidate/'.$user->uid.'">Click here if you need another copy of your validation email.</a>');
   }
 }
+
+// hook_form_alter implementation to set the default status of workflow.
+function thurgood_custom_module_form_alter(&$form, $form_state, $form_id) {
+
+    if ((isset($form['type']) && isset($form['#node']) && $form['type']['#value'] .'_node_form' == $form_id)) {
+        if (isset($form['workflow'])) {
+
+            $node = node_load($form['nid']['#value']);
+
+            // Have to hard code this.
+            $wid = 1;
+            $workflow = workflow_load($wid);
+
+            $choices = workflow_field_choices($node);
+            //This too.  5 is "scheduled to go live", 2 is "draft".
+            $value = (isset($choices[5])) ? 5 : 2;
+
+            $current = isset($form_state['values']['workflow']) ? $form_state['values']['workflow'] : false;
+
+            if ($current && isset($choices[$current])) { $value = $current; }
+
+            $form['workflow'][$workflow->name]["#default_value"] = $value;
+        }
+    }
+}
