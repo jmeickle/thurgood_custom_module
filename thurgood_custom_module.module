@@ -5,8 +5,103 @@
 * Replace all comments if you would like. Be sure to identify params, files and returns in your comments
 */
 
-// From http://drupal.org/node/617694
+// This is mega-ew, but I don't have time for a proper rewrite. :(
+function thurgood_custom_module_preprocess_page(&$variables) {
+  // Set up layout variable.
+  $variables['layout'] = 'none';
 
+  if (!empty($variables['left']) && empty($variables['right']) && empty($variables['mid'])) {
+    $variables['layout'] = 'left';
+  }
+
+  if (empty($variables['left']) && !empty($variables['right']) && empty($variables['mid'])) {
+    $variables['layout'] = 'right';
+  }
+
+  if (empty($variables['left']) && !empty($variables['right']) && !empty($variables['mid'])) {
+    $variables['layout'] = 'right-mid';
+  }
+
+  if (!empty($variables['left']) && !empty($variables['right']) && empty($variables['mid'])) {
+    $variables['layout'] = 'both';
+  }
+
+  if (!empty($variables['left']) && !empty($variables['mid']) && !empty($variables['right'])) {
+    $variables['layout'] = 'all';
+  }
+
+  $body = split('"', $variables['body_attributes']);
+
+  $body_classes = '';
+  $body_id = '';
+
+  foreach ($body as $key => $value) {
+      if ($value == " id=") {
+          $body_id = $body[$key+1];
+      }
+      if ($value == " class=") {
+          $body_classes = $body[$key+1];
+      }
+  }
+
+  $body_classes = split(" ", $body_classes);
+
+  foreach ($body_classes as $key => $value) {
+      if ($value  == "registered-user" || $value == "anonymous-user") {
+          $body_classes = array_slice($body_classes, 0, $key+1);
+          break;
+      }
+   }
+
+  // Add a class that tells us whether we're on the front page or not.
+  $body_classes[] = $variables['is_front'] ? 'front' : 'not-front';
+  // Add a class that tells us whether the page is viewed by an authenticated user or not.
+  $body_classes[] = $variables['logged_in'] ? 'logged-in' : 'not-logged-in';
+  // Add arg(0) to make it possible to theme the page depending on the current page
+  // type (e.g. node, admin, user, etc.). To avoid illegal characters in the class,
+  // we're removing everything disallowed. We are not using 'a-z' as that might leave
+  // in certain international characters (e.g. German umlauts).
+  $body_classes[] = preg_replace('![^abcdefghijklmnopqrstuvwxyz0-9-_]+!s', '', 'page-' . form_clean_id(drupal_strtolower(arg(0))));
+  // If on an individual node page, add the node type.
+  if (isset($variables['node']) && $variables['node']->type) {
+    $body_classes[] = 'node-type-' . form_clean_id($variables['node']->type);
+  }
+
+  // Add information about the number of sidebars.
+  if ($variables['layout'] == 'all') {
+    $body_classes[] = 'three-sidebars all';
+  }
+  else if ($variables['layout'] == 'both') {
+    $body_classes[] = 'two-sidebars both';
+  }
+  elseif ($variables['layout'] == 'none') {
+    $body_classes[] = 'no-sidebars';
+  }
+  elseif ($variables['layout'] == 'right-mid') {
+    $body_classes[] = 'two-sidebars right-mid';
+  }
+  else {
+    $body_classes[] = 'one-sidebar sidebar-' . $variables['layout'];
+  }
+
+  // Implode with spaces.
+  $variables['body_attributes'] = ' class="' . implode(' ', $body_classes) . '"';
+  if (!empty($body_id)) {
+      $variables['body_attributes'] .= ' id="' . $body_id . '"';
+  }
+}
+
+function thurgood_custom_module_theme_registry_alter($theme_registry) {
+
+  // Move this one last last last so it can catch changes made by modules and themes.
+  $key = array_search('thurgood_custom_module_preprocess_page', $theme_registry['page']['preprocess functions']);
+  if ($key) {
+    unset($theme_registry['page']['preprocess functions'][$key]);
+  }
+  $theme_registry['page']['preprocess functions'][] = 'thurgood_custom_module_preprocess_page';
+}
+
+// From http://drupal.org/node/617694
 /**
  * Implementation of hook_elements().
  *
