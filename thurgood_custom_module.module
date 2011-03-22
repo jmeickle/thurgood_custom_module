@@ -64,37 +64,37 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
       switch ($delta) {
         case 'article':
 
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Article') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/text_page.png', 'Article') . '<p class="dashboard-block">' . $type->description . '</p>',
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Article') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/text_page.png', 'Article') . '<p class="dashboard-block">' . $type->description . '</p>',
                                 'node/add/article',
                                 array('html' => TRUE));
           break;
 
         case 'event':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Event') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/calendar.png', 'Event') . '<p class="dashboard-block">' . $type->description . '</p>',
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Event') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/calendar.png', 'Event') . '<p class="dashboard-block">' . $type->description . '</p>',
                                 'node/add/event',
                                 array('html' => TRUE));
           break;
 
         case 'place':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Place') . '</h3>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/globe.png', 'Place') . '<p class="dashboard-block">' . $type->description . '</p>',
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Place') . '</h2>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/globe.png', 'Place') . '<p class="dashboard-block">' . $type->description . '</p>',
                                 'node/add/place',
                                 array('html' => TRUE));
           break;
 
         case 'tutorial':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Tutorial') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/help.png', 'Tutorial') . '<p class="dashboard-block">Learn how the ctreentry.info website works here.</p>',
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Tutorial') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/help.png', 'Tutorial') . '<p class="dashboard-block">Learn how the ctreentry.info website works here.</p>',
                                 'tutorial',
                                 array('html' => TRUE));
           break;
 
         case 'filter':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Filter') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/search_page.png', 'Filter') . '<p class="dashboard-block">View site content and apply filters to narrow down your search.</p>',
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Filter') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/search_page.png', 'Filter') . '<p class="dashboard-block">View site content and apply filters to narrow down your search.</p>',
                                 'admin/content/filter',
                                 array('html' => TRUE));
           break;
 
         case 'workflow':
-          $block['content'] = l('<h3 class="dashboard-block">' . t('Workflow') . '</h3>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/page_process.png', 'Workflow') . '<p class="dashboard-block">View the publishing status of content across the site.</p>',
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Workflow') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/page_process.png', 'Workflow') . '<p class="dashboard-block">View the publishing status of content across the site.</p>',
                                 'workflow',
                                 array('html' => TRUE));
           break;
