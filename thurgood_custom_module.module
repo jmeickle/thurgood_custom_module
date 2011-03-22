@@ -203,13 +203,28 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
   }
 }
 
-// hook_init implementation, right now just for the validation email message.
+// hook_init implementation
+
+// for the validation email message:
+
 function thurgood_custom_module_init() {
   global $user;
   if (!empty($user->roles['10'])) {
      drupal_set_message('You are seeing this message because you haven\'t confirmed your email address yet. 
 Certain sections of the site will be inaccessible until you do so. <a href="http://ctreentry.info/toboggan/revalidate/'.$user->uid.'">Click here if you need another copy of your validation email.</a>');
   }
+
+// redirect bounce/* to *; this seems pointless, but lets me have
+// multiple menu items in Features that would otherwise conflict!
+
+  $path = check_plain(($_GET['q']));
+  $path = explode('/', $path);
+  $first = array_shift($path);
+  if ($first === "bounce")
+  {   
+      drupal_goto(implode("/", $path));
+  }
+
 }
 
 // hook_form_alter implementation to set the default status of workflow.
