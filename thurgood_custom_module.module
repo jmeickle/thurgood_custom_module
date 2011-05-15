@@ -128,7 +128,8 @@ function remove_radio_na($element) {
 function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()) {
 
   define("ICONPATH", "profiles/thurgood/themes/sky_thurgood/images/Coquette/");
-
+  global $user;
+  $userlink = 'users/' . $user->name;
   switch ($op) {
 
     case 'list':
@@ -138,10 +139,18 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
 
       $blocks['tutorial'] = array('info' => t('Thurgood: Dashboard Tutorial Block'));
 
+      $blocks['place_search'] = array('info' => t('Thurgood: Dashboard Place Search Block'));
+      $blocks['bookmarks'] = array('info' => t('Thurgood: Dashboard Bookmarks Block'));
+      $blocks['settings'] = array('info' => t('Thurgood: Dashboard Settings Block'));
+      $blocks['notifications'] = array('info' => t('Thurgood: Dashboard Notifications Block'));
+
       $blocks['filter'] = array('info' => t('Thurgood: Dashboard Filter Block'));
       $blocks['workflow'] = array('info' => t('Thurgood: Dashboard Workflow Block'));
 
       $blocks['main'] = array('info' => t('Thurgood: Dashboard Main Block'));
+
+      $blocks['actions'] = array('info' => t('Thurgood: Actions Block'));
+
       return $blocks;
 
     // In case we eventually want to add config options here.
@@ -182,6 +191,30 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
                                 array('html' => TRUE));
           break;
 
+        case 'place_search':
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Place Search') . '</h2>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/search_globe.png', 'Place Search') . '<p class="dashboard-block">Find resources using an interactive map tool.</p>',
+                                'place/search',
+                                array('html' => TRUE));
+          break;
+
+        case 'bookmarks':
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Bookmarks') . '</h2>' . theme_image(ICONPATH . 'Coquette_4/png/128x128/book_search.png', 'Bookmarks') . '<p class="dashboard-block">View and modify your saved bookmarks.</p>',
+                                'bookmarks',
+                                array('html' => TRUE));
+          break;
+
+        case 'settings':
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Settings') . '</h2>' . theme_image(ICONPATH . 'Coquette_1/png/128x128/tools.png', 'Settings') . '<p class="dashboard-block">Change your account settings.</p>',
+                                $userlink . '/edit',
+                                array('html' => TRUE));
+          break;
+
+        case 'notifications':
+          $block['content'] = l('<h2 class="dashboard-block">' . t('Notifications') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/mail.png', 'Notifications') . '<p class="dashboard-block">Manage your email subscriptions to the site.</p>',
+                                $userlink . '/notifications',
+                                array('html' => TRUE));
+          break;
+
         case 'filter':
           $block['content'] = l('<h2 class="dashboard-block">' . t('Filter') . '</h2>' . theme_image(ICONPATH . 'Coquette_3/png/128x128/search_page.png', 'Filter') . '<p class="dashboard-block">View site content and apply filters to narrow down your search.</p>',
                                 'admin/content/filter',
@@ -198,6 +231,12 @@ function thurgood_custom_module_block($op = 'list', $delta = '', $edit = array()
           $block['content'] = t('Have a bunch of links here that are the main body.');
           break;
 
+        case 'actions':
+          $block['subject'] = 'Actions';
+          $node = menu_get_object();
+          $block['content'] = !empty($node->links) ? '<div class="node">' .
+              theme('links', $node->links, array('class' => 'links inline')) . '</div>' : '';
+          break;
       }
       return $block;
   }
@@ -229,9 +268,65 @@ Certain sections of the site will be inaccessible until you do so. <a href="http
 
 // hook_form_alter implementation to set the default status of workflow.
 function thurgood_custom_module_form_alter(&$form, $form_state, $form_id) {
+
     if ((isset($form['type']) && isset($form['#node']) && $form['type']['#value'] .'_node_form' == $form_id)) {
         if (isset($form['workflow'])) {
-            $form['workflow']["Publishing status"]["#default_value"] = (!empty($form['workflow']["Publishing status"]["#options"][5])) ? 5 : 2;
+
+            $node = node_load($form['nid']['#value']);
+
+            // Have to hard code this.
+            $wid = 1;
+            $workflow = workflow_load($wid);
+
+            $choices = workflow_field_choices($node);
+            //This too.  5 is "scheduled to go live", 2 is "draft".
+            $value = (isset($choices[5])) ? 5 : 2;
+
+            $current = isset($form_state['values']['workflow']) ? $form_state['values']['workflow'] : false;
+
+            if ($current && isset($choices[$current])) { $value = $current; }
+
+            $form['workflow'][$workflow->name]["#default_value"] = $value;
         }
     }
+}
+
+// A little helper function to create a flag link with arbitrary text.
+function thurgood_flag_link($flag_name, $content_id, $title) {
+
+  $flag = flag_get_flag($flag_name);
+  $action = $flag->is_flagged($content_id) ? 'unflag' : 'flag';
+
+  if (!$flag) {
+    // Flag does not exist.
+    return;
+  }
+  if (!$flag->access($content_id) && (!$flag->is_flagged($content_id) || !$flag->access($content_id, 'flag'))) {
+    // User has no permission to use this flag.
+    return;
+  }
+
+  // Generate the link URL.
+  $link_type = $flag->get_link_type();
+  $link = module_invoke($link_type['module'], 'flag_link', $flag, $action, $content_id);
+
+  return l($title, $link['href'], array('html' => TRUE, 'query' => $link['query']));
+}
+
+function thurgood_custom_module_link_alter(&$links, $node, $comment = NULL) {
+
+    // Reorder the links:
+    $move = $links['flag-bookmarks'];
+    unset($links['flag-bookmarks']);
+    $links['flag-bookmarks'] = $move;
+
+    $move = $links['flag-incorrect'];
+    unset($links['flag-incorrect']);
+    $links['flag-incorrect'] = $move;
+
+    // Change the text on this.
+    $types = node_get_types();
+    $type = $types[$node->type]->name;
+    $text = strstr($links['notifications_0']['href'], 'unsubscribe') ? 'Unsubscribe from' : 'Subscribe to'; 
+    $links['notifications_0']['title'] = $text . ' this ' . $type;
 }
