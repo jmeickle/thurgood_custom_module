@@ -266,25 +266,25 @@ Certain sections of the site will be inaccessible until you do so. <a href="http
 
 }
 
-// hook_form_alter implementation to set the default status of workflow.
+// hook_form_alter implementation to set the default workflow status.
 function thurgood_custom_module_form_alter(&$form, $form_state, $form_id) {
 
     if ((isset($form['type']) && isset($form['#node']) && $form['type']['#value'] .'_node_form' == $form_id)) {
         if (isset($form['workflow'])) {
 
-            $node = node_load($form['nid']['#value']);
+            $value = 0;
 
-            // Have to hard code this.
-            $wid = 1;
+            $node = $form['#node'];
+            $wid = workflow_get_workflow_for_type($node->type);
             $workflow = workflow_load($wid);
-
             $choices = workflow_field_choices($node);
-            //This too.  5 is "scheduled to go live", 2 is "draft".
-            $value = (isset($choices[5])) ? 5 : 2;
+            $current = isset($form_state['values']['workflow']) ? $form_state['values']['workflow'] : workflow_node_current_state($node);
 
-            $current = isset($form_state['values']['workflow']) ? $form_state['values']['workflow'] : false;
-
-            if ($current && isset($choices[$current])) { $value = $current; }
+            if (isset($choices[$current]) && $current != 6) { $value = $current; }
+            else {
+                // 5 is "scheduled to go live", 2 is "draft".
+                $value = (isset($choices[5])) ? 5 : 2;
+            }
 
             $form['workflow'][$workflow->name]["#default_value"] = $value;
         }
